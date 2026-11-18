@@ -1,0 +1,15 @@
+# reachmap config: what the tool cannot see by itself.
+# One rule per line: entry | framework | ignore, then a pattern.
+# A pattern is a glob on "path/to/file.ext:Class.method", on the file path, or on "Class.method".
+
+# Started from outside: a cron job, a message queue, a CLI wrapper
+entry jobs/nightly.py:cleanup
+entry src/main/java/org/example/batch/*:*.run
+
+# Called by the framework by name (reflection, plugin registry, XML config)
+framework app/plugins/*.py
+framework *:*Handler.handle
+
+# Known and accepted: do not list as unused
+ignore src/legacy/*
+ignore *:debugDump
